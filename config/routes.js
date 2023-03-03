@@ -13,10 +13,10 @@ const UserController = require("../api/controllers/UserController");
 module.exports.routes = {
 
   // User Controllers
-  'GET /': {view: 'pages/homePage'},
+  // 'GET /': {view: 'pages/homepage'},
 
   // login Page --> Home Page
-  // 'GET /login' : UserController.loginPage,
+  'GET /login' : UserController.loginPage,
 
   // signup Page
   'GET /signup': UserController.signupPage,
