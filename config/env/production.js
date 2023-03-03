@@ -151,7 +151,7 @@ module.exports = {
     ***************************************************************************/
     cors: {
       allowOrigins: [
-        'https://expense-manager-2.onrender.com',
+        'https://expense-manager-n1zb.onrender.com',
       ]
     },
 

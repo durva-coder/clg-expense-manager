@@ -77,6 +77,6 @@ module.exports.sockets = {
   ***************************************************************************/
 
   // grant3rdPartyCookie: true,
-  onlyAllowOrigins: ["https://expense-manager-2.onrender.com"]
+  onlyAllowOrigins: ["https://expense-manager-n1zb.onrender.com"]
 
 };
