@@ -46,9 +46,7 @@ module.exports = {
       type: 'string'
     },
 
-    image:{
-      type: 'string'
-    }
+    
     
   },
 
