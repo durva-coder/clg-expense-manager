@@ -53,21 +53,22 @@ module.exports = {
       else{
         // used mailTrap 
         let transport = nodemailer.createTransport({
-          host: 'sandbox.smtp.mailtrap.io',
-          port: 465,
-          secure: false,
+          // host: 'gmail',
+          // port: 465,
+          service: 'gmail',
+          // secure: false,
           
           auth: {
-              user: '56501fef0c98c9',
-              pass: '39c36c12108ac2'
+              user: 'durvarbanthia@gmail.com',
+              pass: 'qwbyprqkgyjtdmds'
           },
        });
 
        const mailOptions = {
-          from: 'durvab@zignuts.com', // Sender address
+          from: 'durvarbanthia@gmail.com', // Sender address
           to: `${inputs.email}`, // List of recipients
           subject: 'Welcome Message', // Subject line
-          html: '<h2 style="color:#ff6600;">Hello People!, Welcome to Expense Manager!</h2> ' + otp
+          html: '<h2 style="color:#ff6600;">Hello People!, Welcome to Expense Manager!</h2> Your Verify OTP is:' + otp
         };
     
         transport.sendMail(mailOptions, function(err, info) {
