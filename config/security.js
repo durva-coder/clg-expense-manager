@@ -29,9 +29,9 @@ module.exports.security = {
   ***************************************************************************/
 
   // cors: {
-  //   allRoutes: false,
-  //   allowOrigins: '*',
-  //   allowCredentials: false,
+    // allRoutes: false,
+    // allowOrigins: 'https://expense-manager-2.onrender.com',
+    // allowCredentials: false,
   // },
 
 
