@@ -182,16 +182,19 @@ module.exports = {
         
     },
 
+    // verify mail Page
     verifyMail: function(req, res){
         res.view('user/verifyMail', {err: ''});
     },
 
+    // verify mail concept
     verify: async function(req, res){
         let _id = req.userData.userId;
         console.log('verify',_id);
         User.find({_id:_id}).then(async function(docs){
             console.log('jghjfgh',JSON.stringify(docs));
            
+            // checking otp is correct or not
             if(req.body.otp==docs[0].otp){
 
                 User.find({_id}, async function(err, user){
@@ -309,6 +312,7 @@ module.exports = {
         })
     },
 
+    // update profile concept
     updatePro: function(req, res){
         // getting updated details
         let _id = req.userData.userId;
@@ -348,6 +352,7 @@ module.exports = {
             // if user exists then change the password
             if(user != undefined){
            
+                // bcrypting a passowrd before save to DB
             bcrypt.hash(password, 10, async function(err, hash) {
 
                 if (err) return cb(err);
@@ -355,6 +360,7 @@ module.exports = {
                 console.log('hfgj',hash);
                 encryptedPassword = hash;
                 
+                // updating the password
                 var updateUser = await User.update({ email : email})
                 .set({
                     encryptedPassword: encryptedPassword

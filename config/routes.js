@@ -41,16 +41,22 @@ module.exports.routes = {
   // verify Mail Page
   'GET /verifyMail': 'UserController.verifyMail',
 
+  // verify otp
   'POST /verify': 'UserController.verify',
   
+  // view profile of user
   'GET /viewProfile/:_id': 'UserController.viewProfile',
 
+  // update profile of user
   'GET /updateProfile/:_id': 'UserController.updateProfile',
 
+  // update profile concept
   'PUT /updatePro/:_id' : 'UserController.updatePro',
 
+  // forgot passowrd page
   'GET /email': UserController.email,
   
+  // forgot password concept
   'POST /getEmail': UserController.getEmail,
 
   // 'GET /resetPassword': UserController.resetPassword,

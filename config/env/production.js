@@ -21,6 +21,7 @@
 
 module.exports = {
 
+  hookTimeout:80000,
 
   /**************************************************************************
   *                                                                         *
@@ -149,9 +150,9 @@ module.exports = {
     *                                                                          *
     ***************************************************************************/
     cors: {
-      // allowOrigins: [
-      //   'https://example.com',
-      // ]
+      allowOrigins: [
+        'https://expense-manager-2.onrender.com',
+      ]
     },
 
   },
