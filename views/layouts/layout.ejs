@@ -134,7 +134,7 @@
       // Deleting one account
       $('.delete').on('click', function () {
           let _id = $(this).data('id');
-          alert(_id);
+        //  alert(_id);
           if (confirm("Are you sure ?")) {
               $.ajax({
                   type: 'DELETE',
@@ -151,9 +151,9 @@
       $('.account').on('click', function(){
          
          let _id = $(this).data('id');
-         alert(_id)
+       //  alert(_id)
          var accountName = $('#accountName').val();
-         alert(accountName)
+       //  alert(accountName)
       
          $.ajax({
            type: 'PUT',
@@ -172,7 +172,7 @@
        // Deleting one transaction
       $('.deleteTransact').on('click', function () {
           let _id = $(this).data('id');
-          alert(_id);
+        //  alert(_id);
           if (confirm("Are you sure ?")) {
               $.ajax({
                   type: 'DELETE',
@@ -189,13 +189,13 @@
       $('.transaction').on('click', function(){
          
          let _id = $(this).data('id');
-         alert(_id)
+        // alert(_id)
          let types = $('#types').val();
-         alert(types)
+        // alert(types)
          let amount = $('#amount').val();
-         alert(amount)
+       //  alert(amount)
          let description = $('#description').val();
-         alert(description)
+       //  alert(description)
       
          $.ajax({
            type: 'PUT',
@@ -215,13 +215,13 @@
       $('.profile').on('click', function(){
          
          let _id = $(this).data('id');
-         alert(_id)
+       //  alert(_id)
          let name = $('#name').val();
-         alert(name)
+       //  alert(name)
          let phoneNumber = $('#phoneNumber').val();
-         alert(phoneNumber)
+        // alert(phoneNumber)
          let country = $('#country').val();
-         alert(country)
+       //  alert(country)
          
          
          $.ajax({
