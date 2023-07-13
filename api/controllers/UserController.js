@@ -378,7 +378,8 @@ module.exports = {
                 })
                 console.log('token',token);
                 let _id = user.id;
-                return res.redirect(`/dashboard/${_id}`);
+              //  return res.redirect(`/dashboard/${_id}`);
+              return res.redirect('/verifyMail');
                 //Delete the passwords so that they are not stored in the DB
                 // delete password;
                 // delete confirmation;
