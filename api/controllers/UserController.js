@@ -379,6 +379,21 @@ module.exports = {
                 console.log('token',token);
                 let _id = user.id;
               //  return res.redirect(`/dashboard/${_id}`);
+               const greeting = await sails.helpers.welcomeMessage.with({email: req.body.email, password: req.body.password}); 
+            console.log('greeting 1',greeting);
+
+            user.otp = greeting;
+            console.log('hgh97',user);
+
+            // user id 
+           // let _id = user.id;
+            User.find({_id}, async function(err, user){
+                var updateUser = await User.update({ _id : _id})
+                .set({
+                    otp: greeting
+                }).fetch();
+                console.log('k989',updateUser);
+            })
               return res.redirect('/verifyMail');
                 //Delete the passwords so that they are not stored in the DB
                 // delete password;
