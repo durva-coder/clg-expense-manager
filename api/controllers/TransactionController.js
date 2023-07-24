@@ -252,22 +252,20 @@ module.exports = {
             pdf.create(ejsData, option).toFile(path.join(__dirname, '../../transaction.pdf'), (err, response) => {
                 if(err) console.log(err);
 
-                 const filePath = path.resolve(__dirname, '../../transaction.pdf');
-              // const filePath = path.resolve('./transaction.pdf');
+                console.log('file generated'); 
+                console.log(response); 
+               
+                const filePath = path.join(response.filename);
                 fs.readFile(filePath, (err, file) => {
                     if(err) {
                         console.log(err)
                         return res.status(500).send("Could not download file");
                     }
 
-                    res.setHeader('Content-Type', 'application/pdf');
-                    res.setHeader('Content-Disposition', 'attachement;filename="transaction.pdf"');
-
-                   return res.send(file);
+                    return res.setHeader('Content-Type', 'application/pdf').setHeader('Content-Disposition', 'attachement;filename="transaction.pdf"').send(file);
 
 
                 })
-                console.log('file generated');
             })
 
         } catch(error) {
