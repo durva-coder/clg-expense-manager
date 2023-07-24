@@ -112,4 +112,6 @@ module.exports.routes = {
 
   'GET /viewgraph/:_id' : 'TransactionController.viewgraph',
 
+  'GET /downloadPdf/:_id' : 'TransactionController.downloadPdf',
+
 };
