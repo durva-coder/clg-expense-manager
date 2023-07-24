@@ -249,7 +249,7 @@ module.exports = {
                 border: "10mm"
             }
             const ejsData = ejs.render(htmlString, data);
-            pdf.create(ejsData, option).toFile('./transaction.pdf', (err, response) => {
+            pdf.create(ejsData, option).toFile(path.join(__dirname, '../../transaction.pdf'), (err, response) => {
                 if(err) console.log(err);
 
                  const filePath = path.resolve(__dirname, '../../transaction.pdf');
