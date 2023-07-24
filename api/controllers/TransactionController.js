@@ -4,6 +4,10 @@
  * @description :: Server-side actions for handling incoming requests.
  * @help        :: See https://sailsjs.com/docs/concepts/actions
  */
+const ejs = require('ejs');
+const pdf = require('html-pdf');
+const fs = require('fs');
+const path = require('path');
 
 module.exports = {
 
@@ -217,6 +221,57 @@ module.exports = {
         let result = transaction.transactions;
         console.log('iuouw',result);
         res.view('user/viewgraph', {userId: userId, transaction: result})
+    },
+
+  // html to pdf generate require things
+    downloadPdf: async function(req, res) {
+        try{
+            // getting user id
+            let userId = req.userData.userId;
+            // getting account id
+            let _id = req.params._id;
+            console.log(_id);
+            // populating transaction 
+            var transaction = await Account.findOne({_id}).populate('transactions');
+            console.log('tetreg', transaction);
+            let result = transaction.transactions;
+            console.log('iuouw',result);
+             
+            const data = {
+                transaction: result
+            }
+            
+            const filePathName = path.resolve(__dirname, '../../views/user/htmltopdf.ejs');
+            const htmlString = fs.readFileSync(filePathName).toString();
+            let option = {
+                format: 'A3',
+                orientation: 'portrait',
+                border: "10mm"
+            }
+            const ejsData = ejs.render(htmlString, data);
+            pdf.create(ejsData, option).toFile('transaction.pdf', (err, response) => {
+                if(err) console.log(err);
+
+                const filePath = path.resolve(__dirname, '../../transaction.pdf');
+                fs.readFile(filePath, (err, file) => {
+                    if(err) {
+                        console.log(err)
+                        return res.status(500).send("Could not download file");
+                    }
+
+                    res.setHeader('Content-Type', 'application/pdf');
+                    res.setHeader('Content-Disposition', 'attachement;filename="transaction.pdf"');
+
+                    res.send(file);
+
+
+                })
+                console.log('file generated');
+            })
+
+        } catch(error) {
+            console.log(error.message);
+        }
     }
 
 };
