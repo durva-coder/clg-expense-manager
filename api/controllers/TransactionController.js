@@ -252,7 +252,8 @@ module.exports = {
             pdf.create(ejsData, option).toFile('transaction.pdf', (err, response) => {
                 if(err) console.log(err);
 
-                const filePath = path.resolve(__dirname, '../../transaction.pdf');
+                // const filePath = path.resolve(__dirname, '../../transaction.pdf');
+              const filePath = path.resolve('./transaction.pdf');
                 fs.readFile(filePath, (err, file) => {
                     if(err) {
                         console.log(err)
