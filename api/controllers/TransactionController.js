@@ -241,7 +241,7 @@ module.exports = {
                 transaction: result
             }
             
-            const filePathName = path.resolve(__dirname, '../../views/user/htmltopdf.ejs');
+            const filePathName = path.join(__dirname, '../../views/user/htmltopdf.ejs');
             const htmlString = fs.readFileSync(filePathName).toString();
             let option = {
                 format: 'A3',
