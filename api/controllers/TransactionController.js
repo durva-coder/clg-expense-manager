@@ -228,7 +228,6 @@ module.exports = {
 
   downloadPdf: async(req, res) => {
         try{
-          console.log("inside the controller");
             const userId = req.userData.userId;
 
             let _id = req.params._id;
@@ -240,7 +239,7 @@ module.exports = {
             console.log('iuouw',result);
             const filePathName = path.resolve(__dirname, '../../views/user/htmltopdf.ejs');
             const htmlString = await fs.readFileSync(filePathName, 'utf-8');
-            // console.log('gdfhgfh',htmlString);
+             console.log('gdfhgfh',htmlString);
             
             const data = {
                 transaction: result
@@ -291,6 +290,7 @@ module.exports = {
             console.log(err.message);
         }
     },
+
 
 };
 
