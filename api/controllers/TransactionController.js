@@ -10,6 +10,7 @@ const pdf = require('html-pdf');
 const path = require('path');
 const puppeteer = require('puppeteer');
 const fs = require('fs-extra');
+const {join} = require('path');
 
 module.exports = {
 
