@@ -260,7 +260,7 @@ module.exports = {
                 },
                 path: "./outputs.pdf",
               };
-
+            console.log("creating pdf");
 
             pdf
             .create(document, options)
