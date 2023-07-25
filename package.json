@@ -19,6 +19,7 @@
     "nodemailer": "^6.9.1",
     "nodemon": "^2.0.20",
     "pdf-creator-node": "^2.3.5",
+    "phantomjs": "^2.1.7",
     "sails": "^1.5.3",
     "sails-hook-grunt": "^5.0.0",
     "sails-hook-orm": "^4.0.0",
