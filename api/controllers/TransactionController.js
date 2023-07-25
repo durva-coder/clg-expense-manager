@@ -6,8 +6,10 @@
  */
 const ejs = require('ejs');
 const pdf = require('html-pdf');
-const fs = require('fs');
+// const fs = require('fs');
 const path = require('path');
+const puppeteer = require('puppeteer');
+const fs = require('fs-extra');
 
 module.exports = {
 
@@ -224,11 +226,63 @@ module.exports = {
     },
 
   // html to pdf generate require things
-    downloadPdf: async function(req, res) {
+    // downloadPdf: async function(req, res) {
+    //     try{
+    //         // getting user id
+    //         let userId = req.userData.userId;
+    //         // getting account id
+    //         let _id = req.params._id;
+    //         console.log(_id);
+    //         // populating transaction 
+    //         var transaction = await Account.findOne({_id}).populate('transactions');
+    //         console.log('tetreg', transaction);
+    //         let result = transaction.transactions;
+    //         console.log('iuouw',result);
+             
+    //         const data = {
+    //             transaction: result
+    //         }
+            
+    //         const filePathName = path.join(__dirname, '../../views/user/htmltopdf.ejs');
+    //         const htmlString = fs.readFileSync(filePathName).toString();
+    //         let option = {
+    //             format: 'A3',
+    //             orientation: 'portrait',
+    //             border: "10mm"
+    //         }
+    //         const ejsData = ejs.render(htmlString, data);
+    //         pdf.create(ejsData, option).toFile('transaction.pdf', (err, response) => {
+    //             if(err) console.log(err);
+
+    //             console.log('file generated'); 
+    //             console.log(response); 
+               
+    //             const filePath = path.join(response.filename);
+    //             fs.readFile(filePath, (err, file) => {
+    //                 if(err) {
+    //                     console.log(err)
+    //                     return res.status(500).send("Could not download file");
+    //                 }
+
+    //                 return res.setHeader('Content-Type', 'application/pdf').setHeader('Content-Disposition', 'attachement;filename="transaction.pdf"').send(file);
+
+
+    //             })
+    //         })
+
+    //     } catch(error) {
+    //         console.log(error.message);
+    //     }
+    // }
+  downloadPdf: async(req, res) => {
         try{
-            // getting user id
-            let userId = req.userData.userId;
-            // getting account id
+            const userId = req.userData.userId;
+            const browser = await puppeteer.launch();
+            const page = await browser.newPage();
+            // await page.goto(`https://expense-manager-n1zb.onrender.com/viewTransaction/${userId}`, {
+            //     waitUntil: 'networkidle2'
+            // });
+
             let _id = req.params._id;
             console.log(_id);
             // populating transaction 
@@ -240,38 +294,33 @@ module.exports = {
             const data = {
                 transaction: result
             }
+
+            const filePathName = path.resolve(__dirname, '../../views/user/htmltopdf.ejs');
+            const htmlString = await fs.readFile(filePathName, 'utf-8');
+            // console.log('gdfhgfh',htmlString);
+
             
-            const filePathName = path.join(__dirname, '../../views/user/htmltopdf.ejs');
-            const htmlString = fs.readFileSync(filePathName).toString();
-            let option = {
-                format: 'A3',
-                orientation: 'portrait',
-                border: "10mm"
-            }
+            await page.setViewport({ width: 1680, height: 1050});
+            
             const ejsData = ejs.render(htmlString, data);
-            pdf.create(ejsData, option).toFile('transaction.pdf', (err, response) => {
-                if(err) console.log(err);
 
-                console.log('file generated'); 
-                console.log(response); 
-               
-                const filePath = path.join(response.filename);
-                fs.readFile(filePath, (err, file) => {
-                    if(err) {
-                        console.log(err)
-                        return res.status(500).send("Could not download file");
-                    }
-
-                    return res.setHeader('Content-Type', 'application/pdf').setHeader('Content-Disposition', 'attachement;filename="transaction.pdf"').send(file);
-
-
-                })
+            await page.setContent(ejsData);
+            
+            const file = await page.pdf({
+                path: 'output.pdf',
+                format: 'A4',
+                printBackground: true,
             })
+            
+            // await browser.close();
+            // process.exit();
+            return res.setHeader('Content-Type', 'application/pdf').setHeader('Content-Disposition', 'attachement;filename="transaction.pdf"').send(file);
 
-        } catch(error) {
-            console.log(error.message);
+
+        } catch(err) {
+            console.log(err.message);
         }
-    }
+    },
 
 };
 
