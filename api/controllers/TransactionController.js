@@ -263,7 +263,13 @@ module.exports = {
             console.log("creating pdf");
 
             pdf
-            .create(document, options)
+            .create(document, options, {
+                childProcessOptions: {
+                  env: {
+                    OPENSSL_CONF: '/dev/null',
+                  },
+                }
+              })
             .then((response) => {
               
               console.log('file',response);
