@@ -5,12 +5,16 @@
  * @help        :: See https://sailsjs.com/docs/concepts/actions
  */
 const ejs = require('ejs');
-const pdf = require('html-pdf');
+// const pdf = require('html-pdf');
 // const fs = require('fs');
 const path = require('path');
 const puppeteer = require('puppeteer');
-const fs = require('fs-extra');
+// const fs = require('fs-extra');
 const {join} = require('path');
+
+//Required package
+var pdf = require("pdf-creator-node");
+var fs = require("fs");
 
 module.exports = {
 
@@ -275,16 +279,61 @@ module.exports = {
     //         console.log(error.message);
     //     }
     // }
+  // downloadPdf: async(req, res) => {
+  //       try{
+  //           const userId = req.userData.userId;
+  //           const browser = await puppeteer.launch({
+  //               headless: true
+  //           });
+  //           const page = await browser.newPage();
+  //           // await page.goto(`https://expense-manager-n1zb.onrender.com/viewTransaction/${userId}`, {
+  //           //     waitUntil: 'networkidle2'
+  //           // });
+
+  //           let _id = req.params._id;
+  //           console.log(_id);
+  //           // populating transaction 
+  //           var transaction = await Account.findOne({_id}).populate('transactions');
+  //           console.log('tetreg', transaction);
+  //           let result = transaction.transactions;
+  //           console.log('iuouw',result);
+             
+  //           const data = {
+  //               transaction: result
+  //           }
+
+  //           const filePathName = path.resolve(__dirname, '../../views/user/htmltopdf.ejs');
+  //           const htmlString = await fs.readFile(filePathName, 'utf-8');
+  //           // console.log('gdfhgfh',htmlString);
+
+            
+  //           await page.setViewport({ width: 1680, height: 1050});
+            
+  //           const ejsData = ejs.render(htmlString, data);
+
+  //           await page.setContent(ejsData);
+            
+  //           const file = await page.pdf({
+  //               path: 'output.pdf',
+  //               format: 'A4',
+  //               printBackground: true,
+  //           })
+            
+  //           // await browser.close();
+  //           // process.exit();
+  //           return res.setHeader('Content-Type', 'application/pdf').setHeader('Content-Disposition', 'attachement;filename="transaction.pdf"').send(file);
+
+
+  //       } catch(err) {
+  //           console.log(err.message);
+  //       }
+  //   },
+
+  // cacheDirectory: join(__dirname, '.cache', 'puppeteer'),
+
   downloadPdf: async(req, res) => {
         try{
             const userId = req.userData.userId;
-            const browser = await puppeteer.launch({
-                headless: true
-            });
-            const page = await browser.newPage();
-            // await page.goto(`https://expense-manager-n1zb.onrender.com/viewTransaction/${userId}`, {
-            //     waitUntil: 'networkidle2'
-            // });
 
             let _id = req.params._id;
             console.log(_id);
@@ -293,39 +342,59 @@ module.exports = {
             console.log('tetreg', transaction);
             let result = transaction.transactions;
             console.log('iuouw',result);
-             
+            const filePathName = path.resolve(__dirname, '../../views/user/htmltopdf.ejs');
+            const htmlString = await fs.readFileSync(filePathName, 'utf-8');
+            // console.log('gdfhgfh',htmlString);
+            
             const data = {
                 transaction: result
             }
-
-            const filePathName = path.resolve(__dirname, '../../views/user/htmltopdf.ejs');
-            const htmlString = await fs.readFile(filePathName, 'utf-8');
-            // console.log('gdfhgfh',htmlString);
-
-            
-            await page.setViewport({ width: 1680, height: 1050});
             
             const ejsData = ejs.render(htmlString, data);
 
-            await page.setContent(ejsData);
-            
-            const file = await page.pdf({
-                path: 'output.pdf',
-                format: 'A4',
-                printBackground: true,
-            })
-            
-            // await browser.close();
-            // process.exit();
-            return res.setHeader('Content-Type', 'application/pdf').setHeader('Content-Disposition', 'attachement;filename="transaction.pdf"').send(file);
+            var options = {
+                format: "A3",
+                orientation: "portrait",
+                border: "10mm",
+            };
 
+            var document = {
+                html: ejsData,
+                data: {
+                    transaction: result,
+                },
+                path: "./outputs.pdf",
+              };
+
+
+            pdf
+            .create(document, options)
+            .then((response) => {
+              
+              console.log('file',response);
+
+              const filePath = path.join(response.filename);
+                fs.readFile(filePath, (err, file) => {
+                    if(err) {
+                        console.log(err)
+                        return res.status(500).send("Could not download file");
+                    }
+                    console.log('file1', file);
+                    return res.setHeader('Content-Type', 'application/pdf').setHeader('Content-Disposition', 'attachement;filename="transaction.pdf"').send(file);
+
+                })
+              // return res.setHeader('Content-Type', 'application/pdf').setHeader('Content-Disposition', 'attachement;filename="transaction.pdf"').send(file);
+            })
+            .catch((error) => {
+              console.error(error);
+            });
+
+            // const ejsData = ejs.render(htmlString, data);
 
         } catch(err) {
             console.log(err.message);
         }
     },
-
-  cacheDirectory: join(__dirname, '.cache', 'puppeteer'),
 
 };
 
