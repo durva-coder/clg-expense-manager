@@ -228,6 +228,7 @@ module.exports = {
 
   downloadPdf: async(req, res) => {
         try{
+          console.log("inside the controller");
             const userId = req.userData.userId;
 
             let _id = req.params._id;
