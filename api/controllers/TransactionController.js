@@ -5,7 +5,13 @@
  * @help        :: See https://sailsjs.com/docs/concepts/actions
  */
 const ejs = require('ejs');
+// const pdf = require('html-pdf');
+// const fs = require('fs');
 const path = require('path');
+const puppeteer = require('puppeteer');
+// const fs = require('fs-extra');
+const {join} = require('path');
+
 //Required package
 var pdf = require("pdf-creator-node");
 var fs = require("fs");
@@ -239,14 +245,15 @@ module.exports = {
             console.log('iuouw',result);
             const filePathName = path.resolve(__dirname, '../../views/user/htmltopdf.ejs');
             const htmlString = await fs.readFileSync(filePathName, 'utf-8');
-             console.log('gdfhgfh',htmlString);
+            // console.log('gdfhgfh',htmlString);
             
             const data = {
                 transaction: result
             }
-            
+            // console.log(data);
             const ejsData = ejs.render(htmlString, data);
 
+            // console.log('data',ejsData);
             var options = {
                 format: "A3",
                 orientation: "portrait",
@@ -260,16 +267,10 @@ module.exports = {
                 },
                 path: "./outputs.pdf",
               };
-            console.log("creating pdf");
+
 
             pdf
-            .create(document, options, {
-                childProcessOptions: {
-                  env: {
-                    OPENSSL_CONF: '/dev/null',
-                  },
-                }
-              })
+            .create(document, options)
             .then((response) => {
               
               console.log('file',response);
@@ -296,7 +297,6 @@ module.exports = {
             console.log(err.message);
         }
     },
-
 
 };
 
