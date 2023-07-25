@@ -278,7 +278,9 @@ module.exports = {
   downloadPdf: async(req, res) => {
         try{
             const userId = req.userData.userId;
-            const browser = await puppeteer.launch();
+            const browser = await puppeteer.launch({
+                headless: true
+            });
             const page = await browser.newPage();
             // await page.goto(`https://expense-manager-n1zb.onrender.com/viewTransaction/${userId}`, {
             //     waitUntil: 'networkidle2'
