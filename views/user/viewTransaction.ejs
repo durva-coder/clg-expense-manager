@@ -21,6 +21,19 @@
   background-color: #ddd;
   border-radius: 5px;
 }
+
+h3.balance-less {
+    color: red;
+    padding-top: 10px;
+    padding-left: 110ex;
+}
+
+h3.balance {
+    color: #4CAF50;
+    padding-top: 10px;
+    padding-left: 110ex;
+}
+
 </style>
 
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
@@ -41,6 +54,14 @@
 
     </div>
 </nav>
+
+<div>
+    <% if(balance <= 0 ) { %>       
+        <h3 class="balance-less">Balance: <%= balance %></h3>
+    <% } else { %>
+        <h3 class="balance">Balance: <%= balance %></h3>
+        <% } %>
+</div>
 
 
 <div class="container-xl table-container">
