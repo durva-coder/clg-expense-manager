@@ -105,6 +105,28 @@ module.exports = {
             let result = transaction[0].transactions;
             console.log('result',result);
 
+          let balance = 0;
+            for(let i=0; i<result.length; i++){
+                // console.log('type::::',result[i].types);
+                let type = result[i].types;
+
+                switch(type) {
+                    case 'Transfer':
+                        balance -= result[i].amount;
+                        break;
+
+                    case 'Expense':
+                        balance -= result[i].amount;
+                        break;
+
+                    case 'Income':
+                        balance += result[i].amount;
+                        break;
+                }
+            }
+
+            console.log('Balance:::', balance);
+
             // sorting transaction in descending order
             // result.sort(function(a, b) {
             //     var c = new Date(a.date);
@@ -118,7 +140,7 @@ module.exports = {
             console.log('next',next);
             console.log('current page', page);
             // result = result.limit(limit * 1).skip((page - 1) * limit);
-            return res.view('user/viewTransaction', {transaction: result, userId: userId, _id: _id, totalPages: count, currentPage:page, previous: page - 1, next: next });
+            return res.view('user/viewTransaction', {transaction: result, userId: userId, _id: _id, totalPages: count, currentPage:page, previous: page - 1, next: next, balance: balance });
 
         }
         // else {
