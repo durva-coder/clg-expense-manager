@@ -1,3 +1,28 @@
+<style>
+.disabled-link {
+    pointer-events: none;
+    color: #a1a0a0;
+}
+
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+}
+
+.pagination a.active {
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 5px;
+}
+
+.pagination a:hover:not(.active) {
+  background-color: #ddd;
+  border-radius: 5px;
+}
+</style>
+
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
     <div class="container-fluid">
         <ul class="navbar-nav">
@@ -78,6 +103,82 @@
 
                 </tbody>
             </table>
+            <br><br><br><br><br>
+            
+        <div class="pagination">
+            
+            <% if(previous == 0 && next > totalPages) { %>
+                <a href="?page=<%= previous %>" class="disabled-link ">Previous</a>
+                <%
+                
+                    for(let j=1; j<= totalPages; j++){
+                        %>
+                            <% if (j == currentPage) { %>
+                                <a href="?page=<%= j %>" class="active"><%= j %></a>
+                            <% } else { %>
+                                <a href="?page=<%= j %>" ><%= j %></a>
+                            <% } %>
+                            
+                            <%
+                        }
+                %>
+                <a href="?page=<%= next %>" class="disabled-link ">Next</a>
+            
+            <% } else if(previous == 0){ %>
+            
+                <a href="?page=<%= previous %>" class="disabled-link ">Previous</a>
+                <%
+                    for(let j=1; j<= totalPages; j++){
+                        %>
+                            <% if (j == currentPage) { %>
+                                <a href="?page=<%= j %>" class="active"><%= j %></a>
+                            <% } else { %>
+                                <a href="?page=<%= j %>" ><%= j %></a>
+                            <% } %>
+
+                            <%
+                        }
+                %>
+                <a href="?page=<%= next %>" >Next</a>
+            
+            <% } else if(next > totalPages) { %>
+                
+                    <a href="?page=<%= previous %>" >Previous</a>
+                    <%
+                        for(let j=1; j<= totalPages; j++){
+                            %>
+                                <% if (j == currentPage) { %>
+                                    <a href="?page=<%= j %>" class="active"><%= j %></a>
+                                <% } else { %>
+                                    <a href="?page=<%= j %>" ><%= j %></a>
+                                <% } %>
+
+                                <%
+                            }
+                    %>
+                    <a href="?page=<%= next %>" class="disabled-link ">Next</a>
+                            
+                <% } else { %>
+                
+                    <a href="?page=<%= previous %>" >Previous</a>
+                    <%
+                    
+                        for(let j=1; j<= totalPages; j++){
+                            %>
+                                <% if (j == currentPage) { %>
+                                    <a href="?page=<%= j %>" class="active"><%= j %></a>
+                                <% } else { %>
+                                    <a href="?page=<%= j %>" ><%= j %></a>
+                                <% } %>
+
+                                <%
+                            }
+                
+                    %>
+                    <a href="?page=<%= next %>" >Next</a>
+                
+                <% } %>
+            </div>
         </div>
     </div>
 </div>
