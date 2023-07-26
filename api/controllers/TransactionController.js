@@ -84,20 +84,61 @@ module.exports = {
         // user id through middleware
         let userId = req.userData.userId;
 
-        // getting all transaction populating through account
-        var transaction = await Account.find({_id}).populate('transactions');
-        console.log('tetreg', transaction);
-        let result = transaction[0].transactions;
+        let page = 1;
 
-        // sorting transaction in descending order
-        result.sort(function(a, b) {
-            var c = new Date(a.date);
-            var d = new Date(b.date);
-            return d-c;
-        });
+        if(req.query.page) {
+            console.log("in if condition");
+            page = req.query.page;
+            const limit = 10;
 
-        console.log('uydt', transaction[0].transactions);
-        res.view('user/viewTransaction', {transaction: result, userId: userId, _id: _id});
+            var transaction = await Account.find({_id}).populate('transactions');
+            console.log('tetreg', transaction);
+            let results = transaction[0].transactions;
+            let count = results.length;
+            console.log('count',count);
+            count = Math.ceil(count/limit);
+
+
+            // getting all transaction populating through account
+            var transaction = await Account.find({_id}).populate('transactions', {sort: 'createdAt DESC', limit:(limit * 1), skip:((page - 1) * limit)});
+            console.log('tetreg', transaction);
+            let result = transaction[0].transactions;
+            console.log('result',result);
+
+            // sorting transaction in descending order
+            // result.sort(function(a, b) {
+            //     var c = new Date(a.date);
+            //     var d = new Date(b.date);
+            //     return d-c;
+            // })
+            console.log('total',count);
+            let previous = page - 1;
+            console.log('prev',previous);
+            let next = (Number(page) + 1);
+            console.log('next',next);
+            console.log('current page', page);
+            // result = result.limit(limit * 1).skip((page - 1) * limit);
+            return res.view('user/viewTransaction', {transaction: result, userId: userId, _id: _id, totalPages: count, currentPage:page, previous: page - 1, next: next });
+
+        }
+        // else {
+        //     console.log("in else condition");
+
+        //     // getting all transaction populating through account
+        //     var transaction = await Account.find({_id}).populate('transactions');
+        //     console.log('tetreg', transaction);
+        //     let result = transaction[0].transactions;
+
+        //     // sorting transaction in descending order
+        //     result.sort(function(a, b) {
+        //         var c = new Date(a.date);
+        //         var d = new Date(b.date);
+        //         return d-c;
+        //     });
+
+        //     console.log('uydt', transaction[0].transactions);
+        //     return res.view('user/viewTransaction', {transaction: result, userId: userId, _id: _id});
+        // }
     },
 
     // delete a transaction concept
